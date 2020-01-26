@@ -1,0 +1,25 @@
+@layout('layouts.main')
+
+@section('title')
+  JobPostr - Post your Jobs
+@endsection
+
+@section('content')
+ 	<h1>All Jobs</h1>
+ 	@each(job in jobs)
+		<div class="card mb-3" style="max-width: 540px;">
+		  <div class="row no-gutters">
+		    <div class="col-md-4">
+		      <img src="/pyramid.png" class="card-img" alt="...">
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+		        <h5 class="card-title">{{ job.title }}</h5>
+		        <p class="card-text">{{ job.description }}</p>
+		        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	@endeach
+@endsection
