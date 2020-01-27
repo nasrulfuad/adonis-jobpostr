@@ -1,0 +1,42 @@
+@layout('layouts.main')
+
+@section('title')
+	Jobpostr - Login
+@endsection
+
+@section('content')
+	<div class="card w-50 mx-auto">
+		<div class="card-header">
+			<h1 class="text-center">Login Now</h1>
+		</div>
+		<div class="card-body">
+			@if(flashMessage('loginError'))
+			<div class="alert alert-danger" role="alert">
+				{{ flashMessage('loginError') }}
+			</div>
+			@endif
+			<form action="{{ route('UserController.login') }}" method="POST">
+				{{ csrfField() }}
+				<div class="form-group {{ hasErrorFor('email') ? 'has-danger' : '' }}">
+					<label for="email">Email</label>
+					<input type="email" class="form-control {{ hasErrorFor('email') ? 'is-invalid' : '' }}" id="email" value="{{ old('email', '') }}" name="email">
+					@if(hasErrorFor('email'))
+					<div class="invalid-feedback">
+						{{ getErrorFor('email') }}
+					</div>
+					@endif
+				</div>
+				<div class="form-group {{ hasErrorFor('password') ? 'has-danger' : '' }}">
+					<label for="password">Password</label>
+					<input type="password" class="form-control {{ hasErrorFor('password') ? 'is-invalid' : '' }}" id="password" value="{{ old('password', '') }}" name="password">
+					@if(hasErrorFor('password'))
+					<div class="invalid-feedback">
+						{{ getErrorFor('password') }}
+					</div>
+					@endif
+				</div>
+				<button type="submit" class="btn btn-block btn-primary">Login Now</button>
+			</form>
+		</div>
+	</div>
+@endsection

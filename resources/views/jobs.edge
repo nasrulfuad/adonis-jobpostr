@@ -1,0 +1,86 @@
+@layout('layouts.main')
+
+@section('title')
+JobPostr - Post your Job
+@endsection
+
+@section('content')
+<div class="row">
+	<div class="col-md-4">
+		<div class="card mx-auto">
+			<div class="card-header">
+				<h4 class="text-center">Form a Job</h4>
+			</div>
+			<div class="card-body">
+				@if(flashMessage('message'))
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>Woahh!</strong> {{ flashMessage('message') }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				@endif
+				<form action="{{ route('JobController.create') }}" method="POST" id="main-form">
+					{{ csrfField() }}
+					<div class="form-group {{ hasErrorFor('title') ? 'has-danger' : '' }}">
+						<label for="title">Title</label>
+						<input type="text" class="form-control {{ hasErrorFor('title') ? 'is-invalid' : '' }}" id="title" value="{{ old('title', '') }}" name="title">
+						@if(hasErrorFor('title'))
+						<div class="invalid-feedback">
+							{{ getErrorFor('title') }}
+						</div>
+						@endif
+					</div>
+					<div class="form-group {{ hasErrorFor('link') ? 'has-danger' : '' }}">
+						<label for="link">Link</label>
+						<input type="text" class="form-control {{ hasErrorFor('link') ? 'is-invalid' : '' }}" id="link" value="{{ old('link', '') }}" name="link">
+						@if(hasErrorFor('link'))
+						<div class="invalid-feedback">
+							{{ getErrorFor('link') }}
+						</div>
+						@endif
+					</div>
+					<div class="form-group {{ hasErrorFor('description') ? 'has-danger' : '' }}">
+						<label for="description">Description</label>
+						<textarea name="description" class="form-control {{ hasErrorFor('description') ? 'is-invalid' : '' }}" id="description">{{ old('description', '') }}</textarea>
+						@if(hasErrorFor('description'))
+						<div class="invalid-feedback">
+							{{ getErrorFor('description') }}
+						</div>
+						@endif
+					</div>
+					<button type="submit" class="btn btn-block btn-primary" id="btn-submit">Create a Job</button>
+					<div class="d-none btn-edit">
+						<button type="submit" class="btn btn-block btn-primary">Update</button>
+						<button type="button" class="btn btn-block btn-secondary" id="btn-cancel">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="card">
+			<div class="card-header">
+				<h4>My Jobs</h4>
+			</div>
+			<div class="card-body">
+				@each(job in jobs)
+					<div class="card mb-3">
+						<div class="card-body">
+							<a class="text-decoration-none" href="{{ job.link }}"><h5 class="card-title">{{ job.title }}</h5></a>
+							<p class="card-text">{{ job.description }}</p>
+							<p class="card-text"><small class="text-muted">{{ job.created_at }}</small></p>
+							<a href="#edit" data-id="{{ job.id }}" class="card-link">Edit</a>
+							<a href="{{ route('JobController.destroy', { id: job.id }) }}" class="card-link">Delete</a>
+						</div>
+					</div>
+				@endeach
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
+
+@section('extraJs')
+{{ script('createJob.js') }}
+@endsection

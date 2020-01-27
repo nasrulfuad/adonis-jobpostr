@@ -9,6 +9,14 @@ Jobpostr - Signup
 		<h1 class="text-center">Signup Now</h1>
 	</div>
 	<div class="card-body">
+		@if(flashMessage('message'))
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>Woahh!</strong> {{ flashMessage('message') }}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		@endif
 		<form action="{{ route('UserController.create') }}" method="POST">
 			{{ csrfField() }}
 			<div class="form-group {{ hasErrorFor('username') ? 'has-danger' : '' }}">
@@ -17,6 +25,15 @@ Jobpostr - Signup
 				@if(hasErrorFor('username'))
 				<div class="invalid-feedback">
 					{{ getErrorFor('username') }}
+				</div>
+				@endif
+			</div>
+			<div class="form-group {{ hasErrorFor('fullname') ? 'has-danger' : '' }}">
+				<label for="fullname">Full Name</label>
+				<input type="text" class="form-control {{ hasErrorFor('fullname') ? 'is-invalid' : '' }}" id="fullname" value="{{ old('fullname', '') }}" name="fullname">
+				@if(hasErrorFor('fullname'))
+				<div class="invalid-feedback">
+					{{ getErrorFor('fullname') }}
 				</div>
 				@endif
 			</div>
